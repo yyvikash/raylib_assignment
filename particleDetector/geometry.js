@@ -1,9 +1,10 @@
-function calcOffset(outer, inner) {
-    return (outer - inner) / 2;
+function calcLen(shapeLen, maxLen) {
+    let len = shapeLen * maxLen;
+    return len <= maxLen ? len : maxLen / 2;
 }
 
-function isBorderTouched(coordVal, shapeLen, windowBorder) {
-    return (coordVal > windowBorder - shapeLen) || (coordVal < 0);
+function isBorderTouched(coordVal, shapeLen, borderLeft, borderRight) {
+    return (coordVal > borderRight - shapeLen) || (coordVal < borderLeft);
 }
 
 function isParticleDetected(scannerCoordVal, particleCoordVal, scannerWidth, particleWidth) {
@@ -11,7 +12,7 @@ function isParticleDetected(scannerCoordVal, particleCoordVal, scannerWidth, par
 }
 
 module.exports = {
-    calcOffset,
+    calcLen,
     isBorderTouched,
     isParticleDetected,
 };
