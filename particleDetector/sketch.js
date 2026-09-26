@@ -4,11 +4,17 @@ const WINDOW_WIDTH = 800;
 const WINDOW_HEIGHT = 700;
 const FPS = 240;
 
-let scannerHeight = WINDOW_HEIGHT;
-let scannerWidth = WINDOW_WIDTH * 0.1;
+const scannerHeight = WINDOW_HEIGHT;
+const scannerWidth = WINDOW_WIDTH * 0.1;
 
-let coordX = 0;
-let coordY = 0;
+const particleHeight = WINDOW_HEIGHT;
+const particleWidth = WINDOW_WIDTH * 0.2;
+
+let scannerCoordX = 0;
+let scannerCoordY = 0;
+
+const particleCoordX = WINDOW_WIDTH * 0.4;
+const particleCoordY = 0;
 
 let moveRight = false;
 
@@ -23,8 +29,8 @@ function setup() {
 
 function update() {
     let delta = moveRight ? 1 : -1;
-    coordX += delta;
-    if (g.isBorderTouched(coordX, scannerWidth, WINDOW_WIDTH)) {
+    scannerCoordX += delta;
+    if (g.isBorderTouched(scannerCoordX, scannerWidth, WINDOW_WIDTH)) {
         moveRight = !moveRight;
     }
 }
@@ -33,7 +39,8 @@ function draw() {
     r.BeginDrawing();
 
     r.ClearBackground(r.BLACK);
-    r.DrawRectangle(coordX, coordY, scannerWidth, scannerHeight, r.WHITE);
+    r.DrawRectangle(particleCoordX, particleCoordY, particleWidth, particleHeight, r.BLUE);
+    r.DrawRectangle(scannerCoordX, scannerCoordY, scannerWidth, scannerHeight, r.WHITE);
 
     r.EndDrawing();
 }
