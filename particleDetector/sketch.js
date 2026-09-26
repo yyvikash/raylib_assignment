@@ -12,6 +12,8 @@ const particleWidth = WINDOW_WIDTH * 0.2;
 
 let scannerCoordX = 0;
 let scannerCoordY = 0;
+let scannerColor = r.WHITE;
+
 
 const particleCoordX = WINDOW_WIDTH * 0.4;
 const particleCoordY = 0;
@@ -29,7 +31,10 @@ function setup() {
 
 function update() {
     let delta = moveRight ? 1 : -1;
+
     scannerCoordX += delta;
+    scannerColor = g.isParticleDetected(scannerCoordX, particleCoordX, scannerWidth, particleWidth) ? r.RED : r.WHITE;
+
     if (g.isBorderTouched(scannerCoordX, scannerWidth, WINDOW_WIDTH)) {
         moveRight = !moveRight;
     }
@@ -40,7 +45,7 @@ function draw() {
 
     r.ClearBackground(r.BLACK);
     r.DrawRectangle(particleCoordX, particleCoordY, particleWidth, particleHeight, r.BLUE);
-    r.DrawRectangle(scannerCoordX, scannerCoordY, scannerWidth, scannerHeight, r.WHITE);
+    r.DrawRectangle(scannerCoordX, scannerCoordY, scannerWidth, scannerHeight, scannerColor);
 
     r.EndDrawing();
 }
