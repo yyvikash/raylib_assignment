@@ -3,6 +3,7 @@ function calcLen(shapeLen, maxLen) {
     return len <= maxLen ? len : maxLen / 2;
 }
 
+//for vertical movement borderTop will be borderLeft and borderBottom will be borderRight
 function isBorderTouched(coordVal, shapeLen, borderLeft, borderRight) {
     return (coordVal > borderRight - shapeLen) || (coordVal < borderLeft);
 }

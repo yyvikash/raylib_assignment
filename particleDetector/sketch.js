@@ -10,10 +10,8 @@ const scanner1_Width = WINDOW_WIDTH * 0.05;
 const scanner2_Height = WINDOW_HEIGHT;
 const scanner2_Width = WINDOW_WIDTH * 0.05;
 
-const particle1_Height = WINDOW_HEIGHT;
-const particle1_Width = WINDOW_WIDTH * 0.15;
-const particle2_Height = WINDOW_HEIGHT;
-const particle2_Width = WINDOW_WIDTH * 0.025;
+const scanner3_Height = WINDOW_HEIGHT * 0.05;
+const scanner3_Width = WINDOW_WIDTH;
 
 let scanner1_CoordX = 0;
 let scanner1_CoordY = 0;
@@ -23,14 +21,30 @@ let scanner2_CoordX = WINDOW_WIDTH / 2;
 let scanner2_CoordY = 0;
 let scanner2_Color = r.WHITE;
 
+let scanner3_CoordX = 0;
+let scanner3_CoordY = 0;
+let scanner3_Color = r.WHITE;
+
+
+let scanner1_moveRight = false;
+let scanner2_moveRight = false;
+let scanner3_moveDown = false;
+
+const particle1_Height = WINDOW_HEIGHT;
+const particle1_Width = WINDOW_WIDTH * 0.10;
+const particle2_Height = WINDOW_HEIGHT;
+const particle2_Width = WINDOW_WIDTH * 0.025;
+const particle3_Height = WINDOW_HEIGHT * 0.025;
+const particle3_Width = WINDOW_WIDTH;
+
 
 const particle1_CoordX = WINDOW_WIDTH * 0.3;
 const particle1_CoordY = 0;
 const particle2_CoordX = WINDOW_WIDTH * 0.7;
 const particle2_CoordY = 0;
+const particle3_CoordX = 0;
+const particle3_CoordY = WINDOW_HEIGHT * 0.5;
 
-let scanner1_moveRight = false;
-let scanner2_moveRight = false;
 
 function running() {
     return !r.WindowShouldClose();
@@ -48,11 +62,17 @@ function update() {
     let delta2 = scanner2_moveRight ? 2 : -2;
     scanner2_CoordX += delta2;
 
+    let delta3 = scanner3_moveDown ? 1 : -1;
+    scanner3_CoordY += delta3;
+
     let isDetectedLeft = g.isParticleDetected(scanner1_CoordX, particle1_CoordX, scanner1_Width, particle1_Width) || g.isParticleDetected(scanner1_CoordX, particle2_CoordX, scanner1_Width, particle2_Width);
     scanner1_Color = isDetectedLeft ? r.RED : r.WHITE;
 
     let isDetectedRight = g.isParticleDetected(scanner2_CoordX, particle1_CoordX, scanner2_Width, particle1_Width) || g.isParticleDetected(scanner2_CoordX, particle2_CoordX, scanner2_Width, particle2_Width);
     scanner2_Color = isDetectedRight ? r.RED : r.WHITE;
+
+    let isDetectedVertical = g.isParticleDetected(scanner3_CoordY, particle3_CoordY, scanner3_Height, particle3_Height);
+    scanner3_Color = isDetectedVertical ? r.RED : r.WHITE;
 
     if (g.isBorderTouched(scanner1_CoordX, scanner1_Width, 0, WINDOW_WIDTH / 2)) {
         scanner1_moveRight = !scanner1_moveRight;
@@ -60,6 +80,10 @@ function update() {
 
     if (g.isBorderTouched(scanner2_CoordX, scanner2_Width, WINDOW_WIDTH / 2, WINDOW_WIDTH)) {
         scanner2_moveRight = !scanner2_moveRight;
+    }
+
+    if (g.isBorderTouched(scanner3_CoordY, scanner3_Height, 0, WINDOW_HEIGHT)) {
+        scanner3_moveDown = !scanner3_moveDown;
     }
 }
 
@@ -69,8 +93,10 @@ function draw() {
     r.ClearBackground(r.BLACK);
     r.DrawRectangle(particle1_CoordX, particle1_CoordY, particle1_Width, particle1_Height, r.BLUE);
     r.DrawRectangle(particle2_CoordX, particle2_CoordY, particle2_Width, particle2_Height, r.BLUE);
+    r.DrawRectangle(particle3_CoordX, particle3_CoordY, particle3_Width, particle3_Height, r.BLUE);
     r.DrawRectangle(scanner1_CoordX, scanner1_CoordY, scanner1_Width, scanner1_Height, scanner1_Color);
     r.DrawRectangle(scanner2_CoordX, scanner2_CoordY, scanner2_Width, scanner2_Height, scanner2_Color);
+    r.DrawRectangle(scanner3_CoordX, scanner3_CoordY, scanner3_Width, scanner3_Height, scanner3_Color);
 
     r.EndDrawing();
 }
