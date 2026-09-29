@@ -1,10 +1,18 @@
 //for vertical movement borderTop will be borderLeft and borderBottom will be borderRight
-function isBorderTouched(coordVal, shapeLen, borderLeft, borderRight) {
-    return (coordVal > borderRight - shapeLen) || (coordVal < borderLeft);
+function isBorderTouched(coordVal, scannerLen, borderLeft, borderRight) {
+    return coordVal > borderRight - scannerLen || coordVal < borderLeft;
 }
 
-function isParticleDetected(scannerCoordVal, particleCoordVal, scannerWidth, particleWidth) {
-    return (scannerCoordVal + scannerWidth >= particleCoordVal) && (scannerCoordVal <= particleCoordVal + particleWidth);
+function isParticleDetected(
+    scannerCoordVal,
+    particleCoordVal,
+    scannerWidth,
+    particleWidth,
+) {
+    return (
+        scannerCoordVal + scannerWidth >= particleCoordVal &&
+        scannerCoordVal <= particleCoordVal + particleWidth
+    );
 }
 
 module.exports = {
