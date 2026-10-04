@@ -4,37 +4,37 @@ const p = require("./particles.js");
 const s = require("./screen.js");
 
 function running() {
-    return !r.WindowShouldClose();
+  return !r.WindowShouldClose();
 }
 
 function setup() {
-    r.SetTraceLogLevel(r.LOG_NONE);
-    r.InitWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Particle Detector");
-    r.SetTargetFPS(s.FPS);
+  r.SetTraceLogLevel(r.LOG_NONE);
+  r.InitWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Particle Detector");
+  r.SetTargetFPS(s.FPS);
 }
 
 function update() {
-    sc.moveScanners();
+  sc.moveScanners();
 }
 
 function draw() {
-    r.BeginDrawing();
-    r.ClearBackground(r.BLACK);
+  r.BeginDrawing();
+  r.ClearBackground(r.BLACK);
 
-    p.drawParticles();
-    sc.drawScanners();
+  p.drawParticles();
+  sc.drawScanners();
 
-    r.EndDrawing();
+  r.EndDrawing();
 }
 
 function teardown() {
-    r.CloseWindow();
+  r.CloseWindow();
 }
 
 module.exports = {
-    running,
-    setup,
-    update,
-    draw,
-    teardown,
+  running,
+  setup,
+  update,
+  draw,
+  teardown,
 };
