@@ -1,125 +1,57 @@
 const r = require("raylib");
 const s = require("./screen.js");
+const g = require("./geometry.js");
+const p = require("./particles.js");
 
-const scanners = {
-    scanner1: {
-        x: 0,
-        y: 0,
-        width: s.WINDOW_WIDTH * 0.05,
-        height: s.WINDOW_HEIGHT,
-    },
-    scanner2: {
-        x: s.WINDOW_WIDTH / 2,
-        y: 0,
-        width: s.WINDOW_WIDTH * 0.05,
-        height: s.WINDOW_HEIGHT,
-    },
-    scanner3: {
-        x: 0,
-        y: 0,
-        width: s.WINDOW_WIDTH,
-        height: s.WINDOW_HEIGHT * 0.05,
-    },
-};
+const scanners = {};
 
-let scanner1_Color = r.WHITE;
-let scanner2_Color = r.WHITE;
-let scanner3_Color = r.WHITE;
-
-let scanner1_velocity = 1;
-let scanner2_velocity = 2;
-let scanner3_velocity = 1;
-
-function moveScanners(g, WINDOW_WIDTH, WINDOW_HEIGHT) {
-    scanner1_velocity = g.isBorderTouched(
-        scanners.scanner1.x,
-        scanners.scanner1.width,
-        0,
-        WINDOW_WIDTH / 2,
-    )
-        ? -scanner1_velocity
-        : scanner1_velocity;
-    scanner2_velocity = g.isBorderTouched(
-        scanners.scanner2.x,
-        scanners.scanner2.width,
-        WINDOW_WIDTH / 2,
-        WINDOW_WIDTH,
-    )
-        ? -scanner2_velocity
-        : scanner2_velocity;
-    scanner3_velocity = g.isBorderTouched(
-        scanners.scanner3.y,
-        scanners.scanner3.height,
-        0,
-        WINDOW_HEIGHT,
-    )
-        ? -scanner3_velocity
-        : scanner3_velocity;
+function createScanner(x, y, width, height) {
+    return { x: x, y: y, width: width, height: height };
 }
 
+scanners.scanner1 = createScanner(0, 0, s.WINDOW_WIDTH * 0.05, s.WINDOW_HEIGHT);
+scanners.scanner2 = createScanner(s.WINDOW_WIDTH / 2, 0, s.WINDOW_WIDTH * 0.05, s.WINDOW_HEIGHT);
+scanners.scanner3 = createScanner(0, 0, s.WINDOW_WIDTH, s.WINDOW_HEIGHT * 0.05);
+
+const velocity = {};
+
+function addVelocity(v) {
+    return v;
+}
+
+velocity.scanner1_velocity = addVelocity(1);
+velocity.scanner2_velocity = addVelocity(2);
+velocity.scanner3_velocity = addVelocity(1);
+
 function changeVelocity() {
-    scanners.scanner1.x += scanner1_velocity;
-    scanners.scanner2.x += scanner2_velocity;
-    scanners.scanner3.y += scanner3_velocity;
+    velocity.scanner1_velocity = g.isBorderTouched(scanners.scanner1.x, scanners.scanner1.width, 0, s.WINDOW_WIDTH / 2) ? -velocity.scanner1_velocity : velocity.scanner1_velocity;
+    velocity.scanner2_velocity = g.isBorderTouched(scanners.scanner2.x, scanners.scanner2.width, s.WINDOW_WIDTH / 2, s.WINDOW_WIDTH) ? -velocity.scanner2_velocity : velocity.scanner2_velocity;
+    velocity.scanner3_velocity = g.isBorderTouched(scanners.scanner3.y, scanners.scanner3.height, 0, s.WINDOW_HEIGHT) ? -velocity.scanner3_velocity : velocity.scanner3_velocity;
+}
+
+function moveScanners() {
+    changeVelocity();
+
+    scanners.scanner1.x += velocity.scanner1_velocity;
+    scanners.scanner2.x += velocity.scanner2_velocity;
+    scanners.scanner3.y += velocity.scanner3_velocity;
 }
 
 function drawScanners() {
-    r.DrawRectangleRec(scanners.scanner1, scanner1_Color);
-    r.DrawRectangleRec(scanners.scanner2, scanner2_Color);
-    r.DrawRectangleRec(scanners.scanner3, scanner3_Color);
+    r.DrawRectangleRec(scanners.scanner1, getHorizontalScannerColor(scanners.scanner1, p.particles.particle1));
+    r.DrawRectangleRec(scanners.scanner2, getHorizontalScannerColor(scanners.scanner2, p.particles.particle2));
+    r.DrawRectangleRec(scanners.scanner3, getVerticalScannerColor(scanners.scanner3, p.particles.particle3));
 }
 
-function detectedByScanner3(g, p) {
-    scanner3_Color = g.isParticleDetected(
-        scanners.scanner3.y,
-        p.particles.particle3.y,
-        scanners.scanner3.height,
-        p.particles.particle3.height,
-    )
-        ? r.RED
-        : r.WHITE;
+function getHorizontalScannerColor(scanner, particle) {
+    return g.isParticleDetected(scanner.x, particle.x, scanner.width, particle.width) ? r.RED : r.WHITE;
 }
 
-function detectedByScanner2(g, p) {
-    scanner2_Color =
-        g.isParticleDetected(
-            scanners.scanner2.x,
-            p.particles.particle1.x,
-            scanners.scanner2.width,
-            p.particles.particle1.width,
-        ) ||
-        g.isParticleDetected(
-            scanners.scanner2.x,
-            p.particles.particle2.x,
-            scanners.scanner2.width,
-            p.particles.particle2.width,
-        )
-            ? r.RED
-            : r.WHITE;
-}
-
-function detectedByScanner1(g, p) {
-    scanner1_Color =
-        g.isParticleDetected(
-            scanners.scanner1.x,
-            p.particles.particle1.x,
-            scanners.scanner1.width,
-            p.particles.particle1.width,
-        ) ||
-        g.isParticleDetected(
-            scanners.scanner1.x,
-            p.particles.particle2.x,
-            scanners.scanner1.width,
-            p.particles.particle2.width,
-        )
-            ? r.RED
-            : r.WHITE;
+function getVerticalScannerColor(scanner, particle) {
+    return g.isParticleDetected(scanner.y, particle.y, scanner.height, particle.height) ? r.RED : r.WHITE;
 }
 
 module.exports = {
-    detectedByScanner1,
-    detectedByScanner2,
-    detectedByScanner3,
     drawScanners,
     changeVelocity,
     moveScanners,

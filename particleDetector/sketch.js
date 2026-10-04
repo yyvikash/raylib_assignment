@@ -1,5 +1,4 @@
 const r = require("raylib");
-const g = require("./geometry.js");
 const sc = require("./scanners.js");
 const p = require("./particles.js");
 const s = require("./screen.js");
@@ -15,12 +14,7 @@ function setup() {
 }
 
 function update() {
-    sc.changeVelocity();
-
-    sc.moveScanners(g, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-    sc.detectedByScanner1(g, p);
-    sc.detectedByScanner2(g, p);
-    sc.detectedByScanner3(g, p);
+    sc.moveScanners();
 }
 
 function draw() {

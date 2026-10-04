@@ -1,17 +1,17 @@
 //for vertical movement borderTop will be borderLeft and borderBottom will be borderRight
-function isBorderTouched(coordVal, scannerLen, borderLeft, borderRight) {
-    return coordVal > borderRight - scannerLen || coordVal < borderLeft;
+function isBorderTouched(coordVal, scannerSize, borderLeft, borderRight) {
+    return coordVal > borderRight - scannerSize || coordVal < borderLeft;
 }
 
 function isParticleDetected(
     scannerCoordVal,
     particleCoordVal,
-    scannerWidth,
-    particleWidth,
+    scannerSize,
+    particleSize,
 ) {
     return (
-        scannerCoordVal + scannerWidth >= particleCoordVal &&
-        scannerCoordVal <= particleCoordVal + particleWidth
+        scannerCoordVal + scannerSize >= particleCoordVal &&
+        scannerCoordVal <= particleCoordVal + particleSize
     );
 }
 
