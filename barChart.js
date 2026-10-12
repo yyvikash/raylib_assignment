@@ -76,7 +76,7 @@ function drawAverageLine(world, largestBarHeight) {
 
 function drawBars(world, largestBarHeight) {
   for (let i = 0; i < world.bars.length; i++) {
-    let currBarHeight = getBarHeight(world, world.bars[i], largestBarHeight);
+    const currBarHeight = getBarHeight(world, world.bars[i], largestBarHeight);
 
     r.DrawRectangleRec(
       {
